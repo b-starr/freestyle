@@ -3,11 +3,13 @@ import os
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import datetime
+import time
 
 load_dotenv()
 
 DOCUMENT_ID = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA" #os.environ.get("GOOGLE_SHEET_ID", "OOPS")
-SHEET_NAME = os.environ.get("SHEET_NAME", "Products")
+SHEET_NAME = os.environ.get("SHEET_NAME", "Budget")
 
 
 #NEED TO CREATE GOOGLE_SHEET_ID VARIABLE
@@ -35,17 +37,22 @@ client = gspread.authorize(credentials) #> <class 'gspread.client.Client'>
 
 doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 
+# USER INPUTS
+
+
+# DAILY SUMMARY OUTPUT
 print("-----------------")
-print("SPREADSHEET:", doc.title)
+print("SPREADSHEET:", doc.title) 
 print("-----------------")
 
 sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
 rows = sheet.get_all_records() #> <class 'list'>
 
-for row in rows:
-    print(row) #> <class 'dict'>
-
+#PRINT ALL ROWS
+#for row in rows:
+#    print(row) #> <class 'dict'>
+#
 #
 # WRITE VALUES TO SHEET
 #
@@ -53,8 +60,8 @@ for row in rows:
 next_id = len(rows) + 1 # TODO: should change this to be one greater than the current maximum id value
 
 next_object = {
-    "id": next_id,
-    "name": f"Product {next_id}",
+    "item number": next_id,
+    "cost": f"Product {next_id}",
     "department": "snacks",
     "price": 4.99,
     "availability_date": "2019-01-01"
@@ -70,6 +77,8 @@ print("-----------------")
 print("NEW RECORD:")
 print(next_row)
 print("-----------------")
-print("RESPONSE:")
-print(type(response)) #> dict
-print(response) #> {'spreadsheetId': '___', 'updatedRange': '___', 'updatedRows': 1, 'updatedColumns': 5, 'updatedCells': 5}
+
+
+#print("RESPONSE:")
+#print(type(response)) #> dict
+#print(response) #> {'spreadsheetId': '___', 'updatedRange': '___', 'updatedRows': 1, 'updatedColumns': 5, 'updatedCells': 5}
