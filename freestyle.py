@@ -37,7 +37,23 @@ client = gspread.authorize(credentials) #> <class 'gspread.client.Client'>
 
 doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 
-# USER INPUTS
+# USER INPUTS (ANSON)
+
+expense_cat = input("Input your Expense Category: ")
+
+expense_val = input("How much did it cost - please exclude currency sign:")
+#print("You've input the expense: ",expense_cat, "for $", expense_val)  
+
+print("You've input the expense: {} for ${}".format(expense_cat,expense_val))
+
+#while True:
+#        expense = input("Please input an expense for today: ")
+#        if not expense.isalpha(): # STORE THE INPUT AS A VARIABLE?
+#            print("Please try again.")
+#        else:
+#            break
+#
+
 
 
 # DAILY SUMMARY OUTPUT
@@ -60,11 +76,12 @@ rows = sheet.get_all_records() #> <class 'list'>
 next_id = len(rows) + 1 # TODO: should change this to be one greater than the current maximum id value
 
 next_object = {
-    "item number": next_id,
+    "Expense Number": f"Expense # {next_id}",
     "cost": f"Product {next_id}",
-    "department": "snacks",
-    "price": 4.99,
-    "availability_date": "2019-01-01"
+
+    #"department": "snacks",
+    #"price": 4.99,
+    #"availability_date": "2019-01-01"
 }
 
 next_row = list(next_object.values()) #> [13, 'Product 13', 'snacks', 4.99, '2019-01-01']
@@ -74,10 +91,17 @@ next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
 response = sheet.insert_row(next_row, next_row_number)
 
 print("-----------------")
-print("NEW RECORD:")
-print(next_row)
+print(expense_cat)
 print("-----------------")
 
+#print("-----------------")
+#print("NEW RECORD:")
+#print(next_row)
+#print("-----------------")
+
+#SUM UP A COLUMN? NOT WORKING (ANSON)
+values_list = sheet.col_values(4)
+#print(sum(values_list))
 
 #print("RESPONSE:")
 #print(type(response)) #> dict
