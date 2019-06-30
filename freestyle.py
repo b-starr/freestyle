@@ -37,7 +37,7 @@ client = gspread.authorize(credentials) #> <class 'gspread.client.Client'>
 
 doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 
-# USER INPUTS (ANSON)
+# USER INPUTS 
 
 def to_usd(my_price):
     return "${0:.2f}".format(my_price)
@@ -45,7 +45,9 @@ def to_usd(my_price):
 monthly_budget = input ("Input your monthly  salary less taxes and savings: ")
 days_of_month = input ("How many days are there this month?: ")
 daily_budget = int(monthly_budget) / int(days_of_month)
-print(daily_budget)
+print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
+# print(f"RECENT LOW: {to_usd(float(recent_low))}")
+
 
 expense_cat = input("Input your Expense Category: ")
 
@@ -53,7 +55,7 @@ expense_val = input("How much did it cost (please exclude currency sign): ")
 #print("You've input the expense: ",expense_cat, "for $", expense_val)  
 print("-------------------------------------------------------------")
 
-print("You've input the expense: {} for ${}".format(expense_cat,expense_val))
+print("You've input the expense: {} for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
 #while True:
 #        expense = input("Please input an expense for today: ")
@@ -66,8 +68,8 @@ print("You've input the expense: {} for ${}".format(expense_cat,expense_val))
 
 
 # DAILY SUMMARY OUTPUT
-print("-------------------------------------------------------------")
-print(doc.title) 
+#print("-------------------------------------------------------------")
+#print(doc.title) 
 #print("-----------------")
 
 sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
@@ -103,7 +105,7 @@ total_budget = sheet.cell(1, 5).value
 budget_left = float(daily_budget)- float(total_budget)
 
 print("-------------------------------------------------------------")
-print(f"You have {to_usd(float(budget_left))} of your budget left.")
+print(f"You have {to_usd(float(budget_left))} of your budget left today.")
 #print(float(daily_budget)- float(total_budget))
 # print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print("-------------------------------------------------------------")
