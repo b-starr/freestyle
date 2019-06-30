@@ -39,10 +39,19 @@ doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 
 # USER INPUTS (ANSON)
 
+def to_usd(my_price):
+    return "${0:.2f}".format(my_price)
+
+monthly_budget = input ("Input your monthly  salary less taxes and savings: ")
+days_of_month = input ("How many days are there this month?: ")
+daily_budget = int(monthly_budget) / int(days_of_month)
+print(daily_budget)
+
 expense_cat = input("Input your Expense Category: ")
 
-expense_val = input("How much did it cost - please exclude currency sign:")
+expense_val = input("How much did it cost (please exclude currency sign): ")
 #print("You've input the expense: ",expense_cat, "for $", expense_val)  
+print("-------------------------------------------------------------")
 
 print("You've input the expense: {} for ${}".format(expense_cat,expense_val))
 
@@ -57,9 +66,9 @@ print("You've input the expense: {} for ${}".format(expense_cat,expense_val))
 
 
 # DAILY SUMMARY OUTPUT
-print("-----------------")
-print("SPREADSHEET:", doc.title) 
-print("-----------------")
+print("-------------------------------------------------------------")
+print(doc.title) 
+#print("-----------------")
 
 sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
@@ -77,7 +86,8 @@ next_id = len(rows) + 1 # TODO: should change this to be one greater than the cu
 
 next_object = {
     "Expense Number": f"Expense # {next_id}",
-    "cost": f"Product {next_id}",
+    "Category": expense_cat,
+    "cost": float(expense_val),
 
     #"department": "snacks",
     #"price": 4.99,
@@ -89,10 +99,14 @@ next_row = list(next_object.values()) #> [13, 'Product 13', 'snacks', 4.99, '201
 next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
 
 response = sheet.insert_row(next_row, next_row_number)
+total_budget = sheet.cell(1, 5).value
+budget_left = float(daily_budget)- float(total_budget)
 
-print("-----------------")
-print(expense_cat)
-print("-----------------")
+print("-------------------------------------------------------------")
+print(f"You have {to_usd(float(budget_left))} of your budget left.")
+#print(float(daily_budget)- float(total_budget))
+# print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print("-------------------------------------------------------------")
 
 #print("-----------------")
 #print("NEW RECORD:")
@@ -100,7 +114,7 @@ print("-----------------")
 #print("-----------------")
 
 #SUM UP A COLUMN? NOT WORKING (ANSON)
-values_list = sheet.col_values(4)
+#values_list = sheet.col_values(3)
 #print(sum(values_list))
 
 #print("RESPONSE:")
