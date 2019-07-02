@@ -42,16 +42,17 @@ doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 def to_usd(my_price):
     return "${0:.2f}".format(my_price)
 
-monthly_budget = input ("Input your monthly salary less taxes and savings: ")
-days_of_month = input ("How many days are there this month?: ")
+monthly_budget = input ("Input your monthly salary less taxes and savings: ") #TODO: FAIL GRACEFULLY IF NOT INT
+days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
 daily_budget = int(monthly_budget) / int(days_of_month)
+print("-------------------------------------------------------------")
 print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 # print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
 print()
-print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.")
+print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
 print()
-income_or_expense = input ("Would you like to add an expense or income? Please Type Expense or Income: ")
+income_or_expense = input ("Would you like to add an expense or income? Please Type Expense or Income: ") #TODO: FAIL IF NOT INCOME OR EXPENSE
 
 expense_cat = input("Input your Income/Expense Category: ")
 
