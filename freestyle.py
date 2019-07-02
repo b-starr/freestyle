@@ -5,6 +5,9 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import time
+import calendar
+from calendar import monthrange
+
 
 load_dotenv()
 
@@ -42,13 +45,32 @@ doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 def to_usd(my_price):
     return "${0:.2f}".format(my_price)
 
-monthly_budget = input ("Input your monthly salary less taxes and savings: ") #TODO: FAIL GRACEFULLY IF NOT INT
+
+# ADAPTED FROM https://stackoverflow.com/questions/48738218/python-3-create-error-if-user-input-is-not-an-integer
+
+while True:
+    try:
+        monthly_budget = input ("Input your monthly salary less taxes and savings: ") 
+        monthly_budget = int(monthly_budget)
+    except ValueError:
+        print("Please make sure you input a valid integer.")
+    break
+
+# TODO: PROMPT TO REENTER VALID NUMBER?
+
 days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
 daily_budget = int(monthly_budget) / int(days_of_month)
 print("-------------------------------------------------------------")
 print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
-# print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
+#monthly_budget = input ("Input your monthly salary less taxes and savings: ") #TODO: FAIL GRACEFULLY IF NOT INT
+#days_of_month = input ("Please enter the current year and month eg: 2019, 7") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
+
+daily_budget = int(monthly_budget) / int(days_of_month)
+print("-------------------------------------------------------------")
+print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
+
+# def expense_loop() ?
 print()
 print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
 print()
@@ -71,20 +93,10 @@ print("-------------------------------------------------------------")
 
 print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
-#while True:
-#        expense = input("Please input an expense for today: ")
-#        if not expense.isalpha(): # STORE THE INPUT AS A VARIABLE?
-#            print("Please try again.")
-#        else:
-#            break
-#
-
 
 
 # DAILY SUMMARY OUTPUT
-#print("-------------------------------------------------------------")
 #print(doc.title) 
-#print("-----------------")
 
 sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
@@ -93,10 +105,9 @@ rows = sheet.get_all_records() #> <class 'list'>
 #PRINT ALL ROWS
 #for row in rows:
 #    print(row) #> <class 'dict'>
-#
-#
+
+
 # WRITE VALUES TO SHEET
-#
 
 next_id = len(rows) + 1 # TODO: should change this to be one greater than the current maximum id value
 
@@ -121,8 +132,6 @@ budget_left = float(daily_budget)- float(total_budget)
 print("-------------------------------------------------------------")
 print("-------------------------------------------------------------")
 print(f"You have {to_usd(float(budget_left))} of your budget left today.")
-#print(float(daily_budget)- float(total_budget))
-# print(f"RECENT LOW: {to_usd(float(recent_low))}")
 print()
 print("To add another line item, please re-run the program.")
 print("-------------------------------------------------------------")
