@@ -146,8 +146,18 @@ print()
 if budget_left < 0:
     print("You've gone over your budget today - be sure to save more tomorrow!")
 print()
-print("To add another line item, please re-run the program.")
+#print("To add another line item, please re-run the program.")
 print("-------------------------------------------------------------")
+
+Join = input("Would you like to reset today's budget? ") #Adapted from https://stackoverflow.com/questions/17953940/yes-or-no-output-python
+if Join.startswith('y'): 
+    cell_list = sheet.range('A2:C20')
+    for cell in cell_list:
+        cell.value = ""
+    sheet.update_cells(cell_list)
+    print("Today's budget has been reset. Thanks!")
+else:
+  print ("No problem. We'll leave your budget as is.")
 
 #print("-----------------")
 #print("NEW RECORD:")
