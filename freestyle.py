@@ -76,59 +76,69 @@ daily_budget = int(monthly_budget) / int(days_of_month)
 print("-------------------------------------------------------------")
 #print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 
-# def expense_loop() #TODO How to loop back to here? Anson
-print()
-print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
-print()
+expense_loop = True #Help from Anson
+while (expense_loop):
+    print()
+    print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
+    print()
 
-expense_cat = input("Input your Income/Expense Category: ")
-expense_val = input("How much did you spend/earn (please exclude currency sign): ")
+    expense_cat = input("Input your Income/Expense Category: ")
+    expense_val = input("How much did you spend/earn (please exclude currency sign): ")
 
-#print("You've input the expense: ",expense_cat, "for $", expense_val)  
-income_or_expense = input ("Is this line item income or expense? ") 
-if income_or_expense.startswith('i'): 
-    expense_val = float(expense_val)*-1 #Help from Anson
-    print("Ok. We'll mark this as income for today.")
-else:
-    print("Ok. We'll add this as an expense.")
-print("-------------------------------------------------------------")
+    #print("You've input the expense: ",expense_cat, "for $", expense_val)  
+    income_or_expense = input ("Is this line item income or expense? ") 
+    if income_or_expense.startswith('i'): 
+        expense_val = float(expense_val)*-1 #Help from Anson
+        print("Ok. We'll mark this as income for today.")
+    else:
+        print("Ok. We'll add this as an expense.")
+    print("-------------------------------------------------------------")
 
-print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
-
-
-
-# DAILY SUMMARY OUTPUT
-#print(doc.title) 
-
-sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
-
-rows = sheet.get_all_records() #> <class 'list'>
+    print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
 
-# WRITE VALUES TO SHEET
 
-next_id = len(rows) + 1 
-next_object = {
-    "Expense Number": f"Expense # {next_id}",
-    "Category": expense_cat,
-    "cost": float(expense_val),
-}
+    # DAILY SUMMARY OUTPUT
+    #print(doc.title) 
 
-next_row = list(next_object.values()) 
-next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
+    sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
-response = sheet.insert_row(next_row, next_row_number)
-total_budget = sheet.cell(1, 5).value
-budget_left = float(daily_budget)- float(total_budget)
+    rows = sheet.get_all_records() #> <class 'list'>
 
-print("-------------------------------------------------------------")
-print("-------------------------------------------------------------")
-print(f"You have {to_usd(float(budget_left))} of your budget left today.")
-print()
-if budget_left < 0:
-    print("You've gone over your budget today - be sure to save more tomorrow!")
-print()
-print("-------------------------------------------------------------")
+
+    # WRITE VALUES TO SHEET
+
+    next_id = len(rows) + 1 
+    next_object = {
+        "Expense Number": f"Expense # {next_id}",
+        "Category": expense_cat,
+        "cost": float(expense_val),
+    }
+
+    next_row = list(next_object.values()) 
+    next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
+
+    response = sheet.insert_row(next_row, next_row_number)
+    total_budget = sheet.cell(1, 5).value
+    budget_left = float(daily_budget)- float(total_budget)
+
+    print("-------------------------------------------------------------")
+    print("-------------------------------------------------------------")
+    print(f"You have {to_usd(float(budget_left))} of your budget left today.")
+    print()
+    if budget_left < 0:
+        print("You've gone over your budget today - be sure to save more tomorrow!")
+    print()
+    print("-------------------------------------------------------------")
+
+
+    add_more = input("Would you like to add more line items? ") #Adapted from https://stackoverflow.com/questions/17953940/yes-or-no-output-python and https://github.com/burnash/gspread/issues/51
+    if add_more.startswith('y'): 
+        pass
+    else:
+      expense_loop = False
+      print ("Great!")
+
 
 Join = input("Would you like to reset today's budget? ") #Adapted from https://stackoverflow.com/questions/17953940/yes-or-no-output-python and https://github.com/burnash/gspread/issues/51
 if Join.startswith('y'): 
