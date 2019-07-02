@@ -45,15 +45,13 @@ doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 def to_usd(my_price):
     return "${0:.2f}".format(my_price)
 
-
-# ADAPTED FROM https://stackoverflow.com/questions/48738218/python-3-create-error-if-user-input-is-not-an-integer and https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
-
 print()
 print("Welcome to your daily budget! You'll be asked a series of questions to determine your budget and line items.")
 print("Please make sure to enter only whole numbers and without any currency symbols.")
 print("Let's get started!")
 print()
 
+# ADAPTED FROM https://stackoverflow.com/questions/48738218/python-3-create-error-if-user-input-is-not-an-integer and https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
 while True:
     try:
         monthly_budget = int(input ("Input your monthly salary less taxes and savings this month: ") )
@@ -63,7 +61,6 @@ while True:
     else:
         break
 
-#days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
 # Adapted from https://stackoverflow.com/questions/9481136/how-to-find-number-of-days-in-the-current-month/9481305
 now = datetime.datetime.now()
 days_of_month = calendar.monthrange(now.year, now.month)[1]
@@ -79,27 +76,22 @@ daily_budget = int(monthly_budget) / int(days_of_month)
 print("-------------------------------------------------------------")
 #print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 
-# def expense_loop() ?
+# def expense_loop() #TODO How to loop back to here? Anson
 print()
 print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
 print()
 
-income_or_expense = input ("Would you like to add an expense or income? Please Type Expense or Income: ") #TODO: FAIL IF NOT INCOME OR EXPENSE
-
 expense_cat = input("Input your Income/Expense Category: ")
-
 expense_val = input("How much did you spend/earn (please exclude currency sign): ")
+
 #print("You've input the expense: ",expense_cat, "for $", expense_val)  
+income_or_expense = input ("Is this line item income or expense? ") 
+if income_or_expense.startswith('i'): 
+    expense_val = float(expense_val)*-1 #Help from Anson
+    print("Ok. We'll mark this as income for today.")
+else:
+    print("Ok. We'll add this as an expense.")
 print("-------------------------------------------------------------")
-
-#if (income_or_expense == "Income"):
-#    expense_val = (expense_val * -1)
-#else:
-#    expense_val = expense_val
-
-#def convert_income()
-#    expense_val * -1
-#income_val = 
 
 print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
@@ -112,27 +104,17 @@ sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
 rows = sheet.get_all_records() #> <class 'list'>
 
-#PRINT ALL ROWS
-#for row in rows:
-#    print(row) #> <class 'dict'>
-
 
 # WRITE VALUES TO SHEET
 
-next_id = len(rows) + 1 # TODO: should change this to be one greater than the current maximum id value
-
+next_id = len(rows) + 1 
 next_object = {
     "Expense Number": f"Expense # {next_id}",
     "Category": expense_cat,
     "cost": float(expense_val),
-
-    #"department": "snacks",
-    #"price": 4.99,
-    #"availability_date": "2019-01-01"
 }
 
-next_row = list(next_object.values()) #> [13, 'Product 13', 'snacks', 4.99, '2019-01-01']
-
+next_row = list(next_object.values()) 
 next_row_number = len(rows) + 2 # number of records, plus a header row, plus one
 
 response = sheet.insert_row(next_row, next_row_number)
@@ -146,10 +128,9 @@ print()
 if budget_left < 0:
     print("You've gone over your budget today - be sure to save more tomorrow!")
 print()
-#print("To add another line item, please re-run the program.")
 print("-------------------------------------------------------------")
 
-Join = input("Would you like to reset today's budget? ") #Adapted from https://stackoverflow.com/questions/17953940/yes-or-no-output-python
+Join = input("Would you like to reset today's budget? ") #Adapted from https://stackoverflow.com/questions/17953940/yes-or-no-output-python and https://github.com/burnash/gspread/issues/51
 if Join.startswith('y'): 
     cell_list = sheet.range('A2:C20')
     for cell in cell_list:
@@ -159,14 +140,15 @@ if Join.startswith('y'):
 else:
   print ("No problem. We'll leave your budget as is.")
 
+
+#PRINT ALL ROWS
+#for row in rows:
+#    print(row) #> <class 'dict'>
+
 #print("-----------------")
 #print("NEW RECORD:")
 #print(next_row)
 #print("-----------------")
-
-#SUM UP A COLUMN? NOT WORKING (ANSON)
-#values_list = sheet.col_values(3)
-#print(sum(values_list))
 
 #print("RESPONSE:")
 #print(type(response)) #> dict
