@@ -143,6 +143,9 @@ print("-------------------------------------------------------------")
 print("-------------------------------------------------------------")
 print(f"You have {to_usd(float(budget_left))} of your budget left today.")
 print()
+if budget_left < 0:
+    print("You've gone over your budget today - be sure to save more tomorrow!")
+print()
 print("To add another line item, please re-run the program.")
 print("-------------------------------------------------------------")
 
