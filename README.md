@@ -41,5 +41,5 @@ Please note that inputs need to be integers, without currency symbols.
 
 This program is formatted to work in USD ($).
 
-## [License](/LICENSE.md)
+## License: MIT
 

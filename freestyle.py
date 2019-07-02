@@ -9,13 +9,13 @@ import calendar
 
 load_dotenv()
 
-DOCUMENT_ID = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA" #os.environ.get("GOOGLE_SHEET_ID", "OOPS")
+DOCUMENT_ID = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA" 
 SHEET_NAME = os.environ.get("SHEET_NAME", "Budget")
 
-#NEED TO CREATE GOOGLE_SHEET_ID VARIABLE
+#GOOGLE_SHEET_ID VARIABLE
 google_sheet_id = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA"
 
-# AUTHORIZATION
+# AUTHORIZATION - help from Prof. R
 
 CREDENTIALS_FILEPATH = os.path.join(os.path.dirname(__file__), "credentials.json")
 
@@ -63,14 +63,10 @@ print()
 print("-------------------------------------------------------------")
 print(f"Your Daily Budget this month is: {to_usd(float(daily_budget))}")
 
-#monthly_budget = input ("Input your monthly salary less taxes and savings: ") #TODO: FAIL GRACEFULLY IF NOT INT
-#days_of_month = input ("Please enter the current year and month eg: 2019, 7") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
-
 daily_budget = int(monthly_budget) / int(days_of_month)
 print("-------------------------------------------------------------")
-#print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 
-expense_loop = True #Help from Anson
+expense_loop = True #Help from Anson Wang, friend outside of class
 while (expense_loop):
     print()
     print("Next, you'll need to enter your line items (Income or Expenses). Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
@@ -90,7 +86,7 @@ while (expense_loop):
     #print("You've input the expense: ",expense_cat, "for $", expense_val)  
     income_or_expense = input ("Is this line item income or expense? ") 
     if income_or_expense.startswith('i'): 
-        expense_val = float(expense_val)*-1 #Help from Anson
+        expense_val = float(expense_val)*-1 #Help from Anson Wang
         print()
         print("Ok. We'll mark this as income for today.")
     else:
@@ -98,10 +94,7 @@ while (expense_loop):
         print("Ok. We'll add this as an expense.")
     print("-------------------------------------------------------------")
 
-    print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
-
-    # DAILY SUMMARY OUTPUT
-    #print(doc.title) 
+    print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang
 
     sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
@@ -150,6 +143,11 @@ if Join.startswith('y'):
 else:
   print ("No problem. We'll leave your budget as is.")
 
+
+
+#
+# APPENDIX - unused but useful code
+#
 
 #PRINT ALL ROWS
 #for row in rows:
