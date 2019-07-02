@@ -46,17 +46,22 @@ def to_usd(my_price):
     return "${0:.2f}".format(my_price)
 
 
-# ADAPTED FROM https://stackoverflow.com/questions/48738218/python-3-create-error-if-user-input-is-not-an-integer
+# ADAPTED FROM https://stackoverflow.com/questions/48738218/python-3-create-error-if-user-input-is-not-an-integer and https://stackoverflow.com/questions/23294658/asking-the-user-for-input-until-they-give-a-valid-response
+
+print()
+print("Welcome to your daily budget! You'll be asked a series of questions to determine your budget and line items.")
+print("Please make sure to enter only whole numbers and without any currency symbols.")
+print("Let's get started!")
+print()
 
 while True:
     try:
-        monthly_budget = input ("Input your monthly salary less taxes and savings: ") 
-        monthly_budget = int(monthly_budget)
+        monthly_budget = int(input ("Input your monthly salary less taxes and savings: ") )
     except ValueError:
         print("Please make sure you input a valid integer.")
-    break
-
-# TODO: PROMPT TO REENTER VALID NUMBER?
+        continue
+    else:
+        break
 
 days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
 daily_budget = int(monthly_budget) / int(days_of_month)
@@ -74,6 +79,7 @@ print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 print()
 print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
 print()
+
 income_or_expense = input ("Would you like to add an expense or income? Please Type Expense or Income: ") #TODO: FAIL IF NOT INCOME OR EXPENSE
 
 expense_cat = input("Input your Income/Expense Category: ")
