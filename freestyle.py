@@ -73,11 +73,19 @@ print("-------------------------------------------------------------")
 expense_loop = True #Help from Anson
 while (expense_loop):
     print()
-    print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
+    print("Next, you'll need to enter your line items (Income or Expenses). Please enter each line item without a currency symbol.") #TODO FAIL IF NOT INT
     print()
 
-    expense_cat = input("Input your Income/Expense Category: ")
-    expense_val = input("How much did you spend/earn (please exclude currency sign): ")
+    expense_cat = input("Please enter the line item description: ")
+
+    while True:
+        try:
+            expense_val = int(input("How much did you spend/earn (please exclude currency sign): "))
+        except ValueError:
+            print("Please make sure you input a valid integer.")
+            continue
+        else:
+            break
 
     #print("You've input the expense: ",expense_cat, "for $", expense_val)  
     income_or_expense = input ("Is this line item income or expense? ") 
@@ -92,15 +100,12 @@ while (expense_loop):
 
     print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
-
-
     # DAILY SUMMARY OUTPUT
     #print(doc.title) 
 
     sheet = doc.worksheet(SHEET_NAME) #> <class 'gspread.models.Worksheet'>
 
     rows = sheet.get_all_records() #> <class 'list'>
-
 
     # WRITE VALUES TO SHEET
 
