@@ -6,22 +6,16 @@ from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import time
 import calendar
-#from calendar import monthrange
-
 
 load_dotenv()
 
 DOCUMENT_ID = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA" #os.environ.get("GOOGLE_SHEET_ID", "OOPS")
 SHEET_NAME = os.environ.get("SHEET_NAME", "Budget")
 
-
 #NEED TO CREATE GOOGLE_SHEET_ID VARIABLE
 google_sheet_id = "1eVf8trq0fzgapnIvy4QXyW8Ifas1x_WmlSnCWlkS7WA"
 
-
-#
 # AUTHORIZATION
-#
 
 CREDENTIALS_FILEPATH = os.path.join(os.path.dirname(__file__), "credentials.json")
 
@@ -89,8 +83,10 @@ while (expense_loop):
     income_or_expense = input ("Is this line item income or expense? ") 
     if income_or_expense.startswith('i'): 
         expense_val = float(expense_val)*-1 #Help from Anson
+        print()
         print("Ok. We'll mark this as income for today.")
     else:
+        print()
         print("Ok. We'll add this as an expense.")
     print("-------------------------------------------------------------")
 
@@ -122,10 +118,9 @@ while (expense_loop):
     total_budget = sheet.cell(1, 5).value
     budget_left = float(daily_budget)- float(total_budget)
 
-    print("-------------------------------------------------------------")
+    print()
     print("-------------------------------------------------------------")
     print(f"You have {to_usd(float(budget_left))} of your budget left today.")
-    print()
     if budget_left < 0:
         print("You've gone over your budget today - be sure to save more tomorrow!")
     print()
