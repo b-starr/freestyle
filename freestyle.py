@@ -42,20 +42,33 @@ doc = client.open_by_key(DOCUMENT_ID) #> <class 'gspread.models.Spreadsheet'>
 def to_usd(my_price):
     return "${0:.2f}".format(my_price)
 
-monthly_budget = input ("Input your monthly  salary less taxes and savings: ")
+monthly_budget = input ("Input your monthly salary less taxes and savings: ")
 days_of_month = input ("How many days are there this month?: ")
 daily_budget = int(monthly_budget) / int(days_of_month)
 print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 # print(f"RECENT LOW: {to_usd(float(recent_low))}")
 
+print()
+print("Next, you'll need to enter Income or Expenses. Please enter each line item without a currency symbol.")
+print()
+income_or_expense = input ("Would you like to add an expense or income? Please Type Expense or Income: ")
 
-expense_cat = input("Input your Expense Category: ")
+expense_cat = input("Input your Income/Expense Category: ")
 
-expense_val = input("How much did it cost (please exclude currency sign): ")
+expense_val = input("How much did you spend/earn (please exclude currency sign): ")
 #print("You've input the expense: ",expense_cat, "for $", expense_val)  
 print("-------------------------------------------------------------")
 
-print("You've input the expense: {} for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
+#if (income_or_expense == "Income"):
+#    expense_val = (expense_val * -1)
+#else:
+#    expense_val = expense_val
+
+#def convert_income()
+#    expense_val * -1
+#income_val = 
+
+print("You've added {} to the budget for ${}".format(expense_cat,expense_val)) #Help from Anson Wang, a friend outside of class
 
 #while True:
 #        expense = input("Please input an expense for today: ")
@@ -105,9 +118,12 @@ total_budget = sheet.cell(1, 5).value
 budget_left = float(daily_budget)- float(total_budget)
 
 print("-------------------------------------------------------------")
+print("-------------------------------------------------------------")
 print(f"You have {to_usd(float(budget_left))} of your budget left today.")
 #print(float(daily_budget)- float(total_budget))
 # print(f"RECENT LOW: {to_usd(float(recent_low))}")
+print()
+print("To add another line item, please re-run the program.")
 print("-------------------------------------------------------------")
 
 #print("-----------------")
