@@ -6,7 +6,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import time
 import calendar
-from calendar import monthrange
+#from calendar import monthrange
 
 
 load_dotenv()
@@ -56,24 +56,28 @@ print()
 
 while True:
     try:
-        monthly_budget = int(input ("Input your monthly salary less taxes and savings: ") )
+        monthly_budget = int(input ("Input your monthly salary less taxes and savings this month: ") )
     except ValueError:
         print("Please make sure you input a valid integer.")
         continue
     else:
         break
 
-days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
+#days_of_month = input ("How many days are there this month?: ") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
+# Adapted from https://stackoverflow.com/questions/9481136/how-to-find-number-of-days-in-the-current-month/9481305
+now = datetime.datetime.now()
+days_of_month = calendar.monthrange(now.year, now.month)[1]
 daily_budget = int(monthly_budget) / int(days_of_month)
+print()
 print("-------------------------------------------------------------")
-print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
+print(f"Your Daily Budget this month is: {to_usd(float(daily_budget))}")
 
 #monthly_budget = input ("Input your monthly salary less taxes and savings: ") #TODO: FAIL GRACEFULLY IF NOT INT
 #days_of_month = input ("Please enter the current year and month eg: 2019, 7") #TODO: FAIL GRACEFULLY IF NOT 28,29,30,31
 
 daily_budget = int(monthly_budget) / int(days_of_month)
 print("-------------------------------------------------------------")
-print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
+#print(f"Your Daily Budget is: {to_usd(float(daily_budget))}")
 
 # def expense_loop() ?
 print()
