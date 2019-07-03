@@ -1,5 +1,5 @@
 # A Personal Daily Budgeting App for Python Freestyle project
-(Adapted from Readme.md for Robo-Advisor)
+
 A basic daily budgeting app that tracks your income and spending per day given inputs for line items, and your monthly income.
 
 ## Prerequisites
@@ -43,3 +43,4 @@ This program is formatted to work in USD ($).
 
 ## License: MIT
 
+(Adapted from Readme.md for Robo-Advisor)
